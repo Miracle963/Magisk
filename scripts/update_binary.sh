@@ -1,25 +1,27 @@
-# EX_ARM, EX_X86, BB_ARM, and BB_X86 should be generated in build.py
-[ "$1" = "indep" ] && INDEP=true || INDEP=false
-$INDEP && TMPDIR=/data/local/tmp || TMPDIR=/dev/tmp
-INSTALLER=$TMPDIR/install; BBDIR=$TMPDIR/bin
-EXBIN=$BBDIR/b64xz; BBBIN=$BBDIR/busybox
-$INDEP || rm -rf $TMPDIR 2>/dev/null;
-mkdir -p $BBDIR 2>/dev/null
-touch $EXBIN $BBBIN; chmod 755 $EXBIN $BBBIN
-echo -ne $EX_ARM > $EXBIN
-if $EXBIN --test 2>/dev/null; then
-  echo $BB_ARM | $EXBIN > $BBBIN
+#!/sbin/sh
+
+TMPDIR=/dev/tmp
+rm -rf $TMPDIR
+mkdir -p $TMPDIR 2>/dev/null
+
+export BBBIN=$TMPDIR/busybox
+for arch in "x86_64" "x86" "arm64-v8a" "armeabi-v7a"; do
+  unzip -o "$3" "lib/$arch/libbusybox.so" -d $TMPDIR >&2
+  libpath="$TMPDIR/lib/$arch/libbusybox.so"
+  chmod 755 $libpath
+  if [ -x $libpath ] && $libpath >/dev/null 2>&1; then
+    mv -f $libpath $BBBIN
+    break
+  fi
+done
+$BBBIN rm -rf $TMPDIR/lib
+
+export INSTALLER=$TMPDIR/install
+$BBBIN mkdir -p $INSTALLER
+$BBBIN unzip -o "$3" "assets/*" "lib/*" "META-INF/com/google/*" -x "lib/*/libbusybox.so" -d $INSTALLER >&2
+export ASH_STANDALONE=1
+if echo "$3" | $BBBIN grep -q "uninstall"; then
+  exec $BBBIN sh "$INSTALLER/assets/uninstaller.sh" "$@"
 else
-  echo -ne $EX_x86 > $EXBIN
-  echo $BB_x86 | $EXBIN > $BBBIN
-fi
-$BBBIN --install -s $TMPDIR/bin
-export PATH=$BBDIR:$PATH
-if $INDEP; then
-  shift
-  exec sh $@
-else
-  mkdir -p $INSTALLER
-  unzip -o "$3" -d $INSTALLER
-  exec sh $INSTALLER/META-INF/com/google/android/updater-script $@
+  exec $BBBIN sh "$INSTALLER/META-INF/com/google/android/updater-script" "$@"
 fi

@@ -11,8 +11,10 @@
 *.bat text eol=crlf
 
 # Denote all files that are truly binary and should not be modified.
-chromeos/** binary
+/tools/keys/** binary
 *.jar binary
 *.exe binary
 *.apk binary
 *.png binary
+*.jpg binary
+*.ttf binary

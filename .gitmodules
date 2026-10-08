@@ -1,18 +1,24 @@
-[submodule "jni/selinux"]
-	path = jni/selinux
+[submodule "selinux"]
+	path = native/src/external/selinux
 	url = https://github.com/topjohnwu/selinux.git
-[submodule "jni/su"]
-	path = jni/su
-	url = https://github.com/topjohnwu/MagiskSU.git
-[submodule "jni/ndk-compression"]
-	path = jni/ndk-compression
-	url = https://github.com/topjohnwu/ndk-compression.git
-[submodule "jni/magiskpolicy"]
-	path = jni/magiskpolicy
-	url = https://github.com/topjohnwu/magiskpolicy.git
-[submodule "MagiskManager"]
-	path = MagiskManager
-	url = https://github.com/topjohnwu/MagiskManager.git
-[submodule "jni/busybox"]
-	path = jni/busybox
-	url = https://github.com/topjohnwu/ndk-busybox.git
+[submodule "lz4"]
+	path = native/src/external/lz4
+	url = https://github.com/lz4/lz4.git
+[submodule "libcxx"]
+	path = native/src/external/libcxx
+	url = https://github.com/topjohnwu/libcxx.git
+[submodule "cxx-rs"]
+	path = native/src/external/cxx-rs
+	url = https://github.com/topjohnwu/cxx.git
+[submodule "lsplt"]
+	path = native/src/external/lsplt
+	url = https://github.com/LSPosed/LSPlt.git
+[submodule "system_properties"]
+	path = native/src/external/system_properties
+	url = https://github.com/topjohnwu/system_properties.git
+[submodule "crt0"]
+	path = native/src/external/crt0
+	url = https://github.com/topjohnwu/crt0.git
+[submodule "xz-embedded"]
+	path = native/src/external/xz-embedded
+	url = https://github.com/tukaani-project/xz-embedded.git
